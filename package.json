@@ -1,0 +1,22 @@
+{
+  "name": "@saltcorn/html",
+  "version": "0.1",
+  "description": "HTML field plugin",
+  "main": "index.js",
+  "dependencies": {
+    "@saltcorn/markup": "^0.0.8",
+  },
+  "author": "Tom Nielsen",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^25.1.0",
+    "@saltcorn/data": "^0.0.8"
+  },
+  "repository": "github:saltcorn/markdown",
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}
