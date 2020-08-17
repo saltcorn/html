@@ -4,7 +4,7 @@
   "description": "HTML field plugin",
   "main": "index.js",
   "dependencies": {
-    "@saltcorn/markup": "^0.0.8",
+    "@saltcorn/markup": "^0.0.8"
   },
   "author": "Tom Nielsen",
   "license": "MIT",
