@@ -4,10 +4,10 @@ const html = {
   name: "HTML",
   sql_name: "text",
   fieldviews: {
-    showAll: { isEdit: false, run: v => v },
+    showAll: { isEdit: false, run: (v) => v },
     peek: {
       isEdit: false,
-      run: v => text(v.length > 10 ? v.substring(0, 10) : v)
+      run: (v) => text(v && v.length > 10 ? v.substring(0, 10) : v),
     },
     editHTML: {
       isEdit: true,
@@ -17,20 +17,20 @@ const html = {
             class: ["form-control", cls],
             name: text(nm),
             id: `input${text(nm)}`,
-            rows: 10
+            rows: 10,
           },
           v || ""
-        )
-    }
+        ),
+    },
   },
-  read: v => {
+  read: (v) => {
     switch (typeof v) {
       case "string":
         return v;
       default:
         return undefined;
     }
-  }
+  },
 };
 
 module.exports = { sc_plugin_api_version: 1, types: [html] };
