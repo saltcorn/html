@@ -1,10 +1,11 @@
 {
   "name": "@saltcorn/html",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "HTML field plugin",
   "main": "index.js",
   "dependencies": {
-    "@saltcorn/markup": "^0.0.8"
+    "@saltcorn/markup": "^0.0.8",
+    "xss": "^1.0.6"
   },
   "author": "Tom Nielsen",
   "license": "MIT",

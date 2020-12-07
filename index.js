@@ -1,13 +1,14 @@
 const { textarea, text } = require("@saltcorn/markup/tags");
+const xss = require("xss");
 
 const html = {
   name: "HTML",
   sql_name: "text",
   fieldviews: {
-    showAll: { isEdit: false, run: (v) => v },
+    showAll: { isEdit: false, run: (v) => xss(v) },
     peek: {
       isEdit: false,
-      run: (v) => text(v && v.length > 10 ? v.substring(0, 10) : v),
+      run: (v) => text(v && v.length > 10 ? xss(v).substring(0, 10) : xss(v)),
     },
     editHTML: {
       isEdit: true,
@@ -19,7 +20,7 @@ const html = {
             id: `input${text(nm)}`,
             rows: 10,
           },
-          v || ""
+          xss(v || "")
         ),
     },
   },
