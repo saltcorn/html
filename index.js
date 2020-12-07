@@ -5,10 +5,12 @@ const html = {
   name: "HTML",
   sql_name: "text",
   fieldviews: {
-    showAll: { isEdit: false, run: (v) => xss(v) },
+    showAll: { isEdit: false, run: (v) => xss(v || "") },
+    unsafeNotEscaped: { isEdit: false, run: (v) => v },
     peek: {
       isEdit: false,
-      run: (v) => text(v && v.length > 10 ? xss(v).substring(0, 10) : xss(v)),
+      run: (v) =>
+        text(v && v.length > 10 ? xss(v).substring(0, 10) : xss(v || "")),
     },
     editHTML: {
       isEdit: true,
