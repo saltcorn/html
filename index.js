@@ -5,7 +5,7 @@ const html = {
   name: "HTML",
   sql_name: "text",
   fieldviews: {
-    showAll: { isEdit: false, run: (v) => xss(v || "") },
+    showAll: { isEdit: false, run: (v) => xss(v || "").split('<blockquote>').join('<blockquote class="blockquote">') },
     unsafeNotEscaped: { isEdit: false, run: (v) => v },
     peek: {
       isEdit: false,
