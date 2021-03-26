@@ -1,16 +1,36 @@
-const { textarea, text } = require("@saltcorn/markup/tags");
+const { textarea, text, div } = require("@saltcorn/markup/tags");
 const xss = require("xss");
 
 const html = {
   name: "HTML",
   sql_name: "text",
   fieldviews: {
-    showAll: { isEdit: false, run: (v) => xss(v || "").split('<blockquote>').join('<blockquote class="blockquote">') },
+    showAll: {
+      isEdit: false,
+      run: (v) =>
+        xss(v || "")
+          .split("<blockquote>")
+          .join('<blockquote class="blockquote">'),
+    },
     unsafeNotEscaped: { isEdit: false, run: (v) => v },
     peek: {
       isEdit: false,
-      run: (v) =>
-        text(v && v.length > 10 ? xss(v).substring(0, 10) : xss(v || "")),
+      configFields: [
+        {
+          name: "number_lines",
+          label: "Number of lines",
+          type: "Integer",
+        },
+      ],
+      run: (v, req, options) =>
+        div(
+          {
+            style: `overflow: hidden;text-overflow: ellipsis;display: -webkit-box; -webkit-line-clamp: ${
+              (options && options.number_lines) || 3
+            }; -webkit-box-orient: vertical;`,
+          },
+          text(xss(v || ""))
+        ),
     },
     editHTML: {
       isEdit: true,
