@@ -1,6 +1,8 @@
 const { textarea, text, div } = require("@saltcorn/markup/tags");
 const xss = require("xss");
 
+xss.whiteList.kbd = [];
+
 const html = {
   name: "HTML",
   sql_name: "text",
