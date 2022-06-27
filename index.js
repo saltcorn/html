@@ -2,6 +2,16 @@ const { textarea, text, div } = require("@saltcorn/markup/tags");
 const xss = require("xss");
 
 xss.whiteList.kbd = [];
+xss.whiteList.table = [
+  "width",
+  "border",
+  "align",
+  "valign",
+  "class",
+  "cellpadding",
+  "cellspacing",
+  "style",
+];
 
 const html = {
   name: "HTML",
