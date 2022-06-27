@@ -10,7 +10,6 @@ xss.whiteList.table = [
   "class",
   "cellpadding",
   "cellspacing",
-  "style",
 ];
 
 const html = {
