@@ -1,5 +1,6 @@
 const { textarea, text, div } = require("@saltcorn/markup/tags");
 const xss = require("xss");
+const { getState } = require("../db/state");
 
 xss.whiteList.kbd = [];
 xss.whiteList.table = [
