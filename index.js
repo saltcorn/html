@@ -13,8 +13,44 @@ xss.whiteList.table = [
 ];
 
 const html = {
-  name: "HTML",
+  name: "HTML_locale",
   sql_name: "text",
+  attributes: ({ table }) => {
+    const strFields =
+      table &&
+      table.fields.filter(
+        (f) =>
+          (f.type || {}).name === "String" &&
+          !(f.attributes && f.attributes.localizes_field)
+      );
+    const locales = Object.keys(
+      getState().getConfig("localizer_languages", {})
+    );
+    return [
+      ...(table
+        ? [
+            {
+              name: "localizes_field",
+              label: "Translation of",
+              sublabel:
+                "This is a translation of a different field in a different language",
+              type: "HTML_locale",
+              attributes: {
+                options: strFields.map((f) => f.name),
+              },
+            },
+            {
+              name: "locale",
+              label: "Locale",
+              sublabel: "Language locale of translation",
+              input_type: "select",
+              options: locales,
+              showIf: { localizes_field: strFields.map((f) => f.name) },
+            },
+          ]
+        : []),
+    ];
+  },
   fieldviews: {
     showAll: {
       isEdit: false,
