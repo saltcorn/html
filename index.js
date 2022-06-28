@@ -21,7 +21,7 @@ const html = {
       table &&
       table.fields.filter(
         (f) =>
-          (f.type || {}).name === "HTML_locale" &&
+          (f.type || {}).name === "HTML" &&
           !(f.attributes && f.attributes.localizes_field)
       );
     const locales = Object.keys(
