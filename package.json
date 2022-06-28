@@ -1,5 +1,5 @@
 {
-  "name": "@saltcorn/html_locale",
+  "name": "@vocamen/html_locale",
   "version": "0.1.8",
   "description": "HTML field plugin which localizes",
   "main": "index.js",
