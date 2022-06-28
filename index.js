@@ -14,7 +14,7 @@ xss.whiteList.table = [
 ];
 
 const html = {
-  name: "HTML_locale",
+  name: "HTML",
   sql_name: "text",
   attributes: ({ table }) => {
     const strFields =
