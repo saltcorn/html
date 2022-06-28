@@ -1,19 +1,19 @@
 {
-  "name": "@saltcorn/html",
+  "name": "@saltcorn/html_locale",
   "version": "0.1.8",
-  "description": "HTML field plugin",
+  "description": "HTML field plugin which localizes",
   "main": "index.js",
   "dependencies": {
     "@saltcorn/markup": "^0.0.8",
     "xss": "^1.0.6"
   },
-  "author": "Tom Nielsen",
+  "author": "PM",
   "license": "MIT",
   "devDependencies": {
     "jest": "^25.1.0",
     "@saltcorn/data": "^0.0.8"
   },
-  "repository": "github:saltcorn/html",
+  "repository": "github:vocamen/html",
   "jest": {
     "testEnvironment": "node"
   },
