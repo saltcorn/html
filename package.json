@@ -1,5 +1,5 @@
 {
-  "name": "@vocamen/html_locale",
+  "name": "@vocamen/html",
   "version": "0.3",
   "description": "HTML field plugin which localizes",
   "main": "index.js",
