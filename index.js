@@ -35,7 +35,7 @@ const html = {
               label: "Translation of",
               sublabel:
                 "This is a translation of a different field in a different language",
-              type: "HTML_locale",
+              type: "String",
               attributes: {
                 options: strFields.map((f) => f.name),
               },
