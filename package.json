@@ -8,6 +8,7 @@
     "xss": "^1.0.6"
   },
   "author": "Tom Nielsen",
+  "contributors": ["PM <contact@vocamen.com> (https://www.vocamen.com)"],
   "license": "MIT",
   "devDependencies": {
     "jest": "^25.1.0",
