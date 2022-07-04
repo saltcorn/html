@@ -1,19 +1,20 @@
 {
-  "name": "@vocamen/html",
-  "version": "0.3",
-  "description": "HTML field plugin which localizes",
+  "name": "@saltcorn/html",
+  "version": "0.1.8",
+  "description": "HTML field plugin",
   "main": "index.js",
   "dependencies": {
     "@saltcorn/markup": "^0.0.8",
     "xss": "^1.0.6"
   },
-  "author": "PM",
+  "author": "Tom Nielsen",
+  "contributors": ["PM <contact@vocamen.com> (https://www.vocamen.com)"],
   "license": "MIT",
   "devDependencies": {
     "jest": "^25.1.0",
     "@saltcorn/data": "^0.0.8"
   },
-  "repository": "github:vocamen/html",
+  "repository": "github:saltcorn/html",
   "jest": {
     "testEnvironment": "node"
   },
