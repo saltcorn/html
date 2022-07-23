@@ -65,7 +65,7 @@ const html = {
       run: (v) =>
         pre(
           code(
-            v
+            (v || "")
               .replaceAll("&", "&amp;")
               .replaceAll("<", "&lt;")
               .replaceAll(">", "&gt;")
