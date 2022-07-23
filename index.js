@@ -1,4 +1,4 @@
-const { textarea, text, div } = require("@saltcorn/markup/tags");
+const { textarea, text, div, pre, code } = require("@saltcorn/markup/tags");
 const xss = require("xss");
 const { getState } = require("@saltcorn/data/db/state");
 
@@ -60,7 +60,24 @@ const html = {
           .split("<blockquote>")
           .join('<blockquote class="blockquote">'),
     },
-    unsafeNotEscaped: { isEdit: false, run: (v) => v },
+    showAsCode: {
+      isEdit: false,
+      run: (v) =>
+        pre(
+          code(
+            v
+              .replaceAll("&", "&amp;")
+              .replaceAll("<", "&lt;")
+              .replaceAll(">", "&gt;")
+              .replaceAll('"', "&quot;")
+              .replaceAll("'", "&#039;")
+          )
+        ),
+    },
+    unsafeNotEscaped: {
+      isEdit: false,
+      run: (v) => v,
+    },
     peek: {
       isEdit: false,
       configFields: [
