@@ -11,7 +11,11 @@ xss.whiteList.table = [
   "class",
   "cellpadding",
   "cellspacing",
+  "style",
 ];
+
+xss.whiteList.span.push("style");
+xss.whiteList.p.push("style");
 
 const html = {
   name: "HTML",
