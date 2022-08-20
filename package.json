@@ -5,7 +5,9 @@
   "main": "index.js",
   "dependencies": {
     "@saltcorn/markup": "^0.0.8",
+    "cheerio": "1.0.0-rc.10",
     "xss": "^1.0.6"
+
   },
   "author": "Tom Nielsen",
   "contributors": [

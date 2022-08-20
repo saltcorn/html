@@ -1,6 +1,7 @@
 const { textarea, text, div, pre, code } = require("@saltcorn/markup/tags");
 const xss = require("xss");
 const { getState } = require("@saltcorn/data/db/state");
+const cheerio = require("cheerio");
 
 xss.whiteList.kbd = [];
 xss.whiteList.table = [
@@ -16,6 +17,23 @@ xss.whiteList.table = [
 
 xss.whiteList.span.push("style");
 xss.whiteList.p.push("style");
+
+const rmFirstWord = s => s.substring(s.indexOf(" ") + 1);
+
+const searchExtract = (txt, q) => {
+  if (!q)
+    return txt.substring(0, 150) + '...';
+  const searchWords = q.split(' ');
+  const wordStarts = searchWords.map(w => [w, txt.indexOf(w)]).filter(([w, ix]) => ix >= 0)
+  if (wordStarts.length == 0) return txt.substring(0, 150) + '...';
+  const ix = wordStarts[0][1]
+  const start = Math.max(0, ix - 100)
+  const extract = txt.substring(start, Math.min(ix + 120, txt.length - 1))
+  const replace = (t, [w, ...ws]) => w ? replace(t.replaceAll(w, `<b>${w}</b>`), ws) : t
+  const replaced = replace(extract, searchWords)
+  return (start === 0 ? replaced + "..." : "..." + rmFirstWord(replaced)) + "..."
+  //return extract.replaceAll(wordStarts[0][0], `<b>${wordStarts[0][0]}</b>`)
+}
 
 const html = {
   name: "HTML",
@@ -34,25 +52,25 @@ const html = {
     return [
       ...(table
         ? [
-            {
-              name: "localizes_field",
-              label: "Translation of",
-              sublabel:
-                "This is a translation of a different field in a different language",
-              type: "String",
-              attributes: {
-                options: strFields.map((f) => f.name),
-              },
+          {
+            name: "localizes_field",
+            label: "Translation of",
+            sublabel:
+              "This is a translation of a different field in a different language",
+            type: "String",
+            attributes: {
+              options: strFields.map((f) => f.name),
             },
-            {
-              name: "locale",
-              label: "Locale",
-              sublabel: "Language locale of translation",
-              input_type: "select",
-              options: locales,
-              showIf: { localizes_field: strFields.map((f) => f.name) },
-            },
-          ]
+          },
+          {
+            name: "locale",
+            label: "Locale",
+            sublabel: "Language locale of translation",
+            input_type: "select",
+            options: locales,
+            showIf: { localizes_field: strFields.map((f) => f.name) },
+          },
+        ]
         : []),
     ];
   },
@@ -78,6 +96,15 @@ const html = {
           )
         ),
     },
+    showSearchExtract: {
+      isEdit: false,
+      run: (v, req) => {
+        console.log(req.query);
+        const $ = cheerio.load(`<body>${v}</body>`);
+        const txt = $('body').text()
+        return searchExtract(txt, req.query.q)
+      }
+    },
     unsafeNotEscaped: {
       isEdit: false,
       run: (v) => v,
@@ -94,9 +121,8 @@ const html = {
       run: (v, req, options) =>
         div(
           {
-            style: `overflow: hidden;text-overflow: ellipsis;display: -webkit-box; -webkit-line-clamp: ${
-              (options && options.number_lines) || 3
-            }; -webkit-box-orient: vertical;`,
+            style: `overflow: hidden;text-overflow: ellipsis;display: -webkit-box; -webkit-line-clamp: ${(options && options.number_lines) || 3
+              }; -webkit-box-orient: vertical;`,
           },
           text(xss(v || ""))
         ),
