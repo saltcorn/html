@@ -99,7 +99,6 @@ const html = {
     showSearchExtract: {
       isEdit: false,
       run: (v, req) => {
-        console.log(req.query);
         const $ = cheerio.load(`<body>${v}</body>`);
         const txt = $('body').text()
         return searchExtract(txt, req.query.q)
