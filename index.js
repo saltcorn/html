@@ -20,6 +20,15 @@ xss.whiteList.p.push("style");
 
 const rmFirstWord = s => s.substring(s.indexOf(" ") + 1);
 
+const highLight = (txt, w) => {
+  const ix = txt.toUpperCase().indexOf(w.toUpperCase())
+  if (ix < 0) return txt;
+  const wlen = w.length;
+
+  return txt.substring(0, ix) + `<b>${txt.substring(ix, ix + wlen)}</b>` + txt.substring(ix + wlen, txt.length)
+
+}
+
 const searchExtract = (txt, q) => {
   if (!q)
     return txt.substring(0, 150) + '...';
@@ -30,7 +39,8 @@ const searchExtract = (txt, q) => {
   const ix = wordStarts[0][1]
   const start = Math.max(0, ix - 100)
   const extract = txt.substring(start, Math.min(ix + 120, txt.length - 1))
-  const replace = (t, [w, ...ws]) => w ? replace(t.replaceAll(w, `<b>${w}</b>`), ws) : t
+  //const replace = (t, [w, ...ws]) => w ? replace(t.replace(new RegExp(`\b${w}\b`, 'ig'), m=>`<b>${m}</b>`), ws) : t
+  const replace = (t, [w, ...ws]) => w ? replace(highLight(t, w), ws) : t
   const replaced = replace(extract, searchWords)
   return (start === 0 ? replaced + "..." : "..." + rmFirstWord(replaced)) + "..."
   //return extract.replaceAll(wordStarts[0][0], `<b>${wordStarts[0][0]}</b>`)
