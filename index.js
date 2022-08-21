@@ -24,7 +24,8 @@ const searchExtract = (txt, q) => {
   if (!q)
     return txt.substring(0, 150) + '...';
   const searchWords = q.split(' ');
-  const wordStarts = searchWords.map(w => [w, txt.indexOf(w)]).filter(([w, ix]) => ix >= 0)
+  const txt_uc = txt.toUpperCase()
+  const wordStarts = searchWords.map(w => [w, txt_uc.indexOf(w.toUpperCase())]).filter(([w, ix]) => ix >= 0)
   if (wordStarts.length == 0) return txt.substring(0, 150) + '...';
   const ix = wordStarts[0][1]
   const start = Math.max(0, ix - 100)
