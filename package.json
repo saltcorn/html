@@ -1,13 +1,12 @@
 {
   "name": "@saltcorn/html",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "HTML field plugin",
   "main": "index.js",
   "dependencies": {
     "@saltcorn/markup": "^0.0.8",
     "cheerio": "1.0.0-rc.10",
     "xss": "^1.0.6"
-
   },
   "author": "Tom Nielsen",
   "contributors": [
@@ -24,5 +23,21 @@
   },
   "scripts": {
     "test": "jest"
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "parserOptions": {
+      "ecmaVersion": 2020
+    },
+    "env": {
+      "node": true,
+      "es6": true
+    },
+    "rules": {
+      "no-unused-vars": "off",
+      "no-case-declarations": "off",
+      "no-empty": "warn",
+      "no-fallthrough": "warn"
+    }
   }
 }
