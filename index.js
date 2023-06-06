@@ -18,33 +18,39 @@ xss.whiteList.table = [
 xss.whiteList.span.push("style");
 xss.whiteList.p.push("style");
 
-const rmFirstWord = s => s.substring(s.indexOf(" ") + 1);
+const rmFirstWord = (s) => s.substring(s.indexOf(" ") + 1);
 
 const highLight = (txt, w) => {
-  const ix = txt.toUpperCase().indexOf(w.toUpperCase())
+  const ix = txt.toUpperCase().indexOf(w.toUpperCase());
   if (ix < 0) return txt;
   const wlen = w.length;
 
-  return txt.substring(0, ix) + `<b>${txt.substring(ix, ix + wlen)}</b>` + txt.substring(ix + wlen, txt.length)
-
-}
+  return (
+    txt.substring(0, ix) +
+    `<b>${txt.substring(ix, ix + wlen)}</b>` +
+    txt.substring(ix + wlen, txt.length)
+  );
+};
 
 const searchExtract = (txt, q) => {
-  if (!q)
-    return txt.substring(0, 150) + '...';
-  const searchWords = q.split(' ');
-  const txt_uc = txt.toUpperCase()
-  const wordStarts = searchWords.map(w => [w, txt_uc.indexOf(w.toUpperCase())]).filter(([w, ix]) => ix >= 0)
-  if (wordStarts.length == 0) return txt.substring(0, 150) + '...';
-  const ix = wordStarts[0][1]
-  const start = Math.max(0, ix - 100)
-  const extract = txt.substring(start, Math.min(ix + 120, txt.length - 1))
+  if (!q) return txt.substring(0, 150) + "...";
+  const searchWords = q.split(" ");
+  const txt_uc = txt.toUpperCase();
+  const wordStarts = searchWords
+    .map((w) => [w, txt_uc.indexOf(w.toUpperCase())])
+    .filter(([w, ix]) => ix >= 0);
+  if (wordStarts.length == 0) return txt.substring(0, 150) + "...";
+  const ix = wordStarts[0][1];
+  const start = Math.max(0, ix - 100);
+  const extract = txt.substring(start, Math.min(ix + 120, txt.length - 1));
   //const replace = (t, [w, ...ws]) => w ? replace(t.replace(new RegExp(`\b${w}\b`, 'ig'), m=>`<b>${m}</b>`), ws) : t
-  const replace = (t, [w, ...ws]) => w ? replace(highLight(t, w), ws) : t
-  const replaced = replace(extract, searchWords)
-  return (start === 0 ? replaced + "..." : "..." + rmFirstWord(replaced)) + "..."
+  const replace = (t, [w, ...ws]) => (w ? replace(highLight(t, w), ws) : t);
+  const replaced = replace(extract, searchWords);
+  return (
+    (start === 0 ? replaced + "..." : "..." + rmFirstWord(replaced)) + "..."
+  );
   //return extract.replaceAll(wordStarts[0][0], `<b>${wordStarts[0][0]}</b>`)
-}
+};
 
 const html = {
   name: "HTML",
@@ -63,25 +69,25 @@ const html = {
     return [
       ...(table
         ? [
-          {
-            name: "localizes_field",
-            label: "Translation of",
-            sublabel:
-              "This is a translation of a different field in a different language",
-            type: "String",
-            attributes: {
-              options: strFields.map((f) => f.name),
+            {
+              name: "localizes_field",
+              label: "Translation of",
+              sublabel:
+                "This is a translation of a different field in a different language",
+              type: "String",
+              attributes: {
+                options: strFields.map((f) => f.name),
+              },
             },
-          },
-          {
-            name: "locale",
-            label: "Locale",
-            sublabel: "Language locale of translation",
-            input_type: "select",
-            options: locales,
-            showIf: { localizes_field: strFields.map((f) => f.name) },
-          },
-        ]
+            {
+              name: "locale",
+              label: "Locale",
+              sublabel: "Language locale of translation",
+              input_type: "select",
+              options: locales,
+              showIf: { localizes_field: strFields.map((f) => f.name) },
+            },
+          ]
         : []),
     ];
   },
@@ -111,9 +117,9 @@ const html = {
       isEdit: false,
       run: (v, req) => {
         const $ = cheerio.load(`<body>${v}</body>`);
-        const txt = $('body').text()
-        return searchExtract(txt, req.query.q)
-      }
+        const txt = $("body").text();
+        return searchExtract(txt, req.query.q);
+      },
     },
     unsafeNotEscaped: {
       isEdit: false,
@@ -131,8 +137,9 @@ const html = {
       run: (v, req, options) =>
         div(
           {
-            style: `overflow: hidden;text-overflow: ellipsis;display: -webkit-box; -webkit-line-clamp: ${(options && options.number_lines) || 3
-              }; -webkit-box-orient: vertical;`,
+            style: `overflow: hidden;text-overflow: ellipsis;display: -webkit-box; -webkit-line-clamp: ${
+              (options && options.number_lines) || 3
+            }; -webkit-box-orient: vertical;`,
           },
           text(xss(v || ""))
         ),
@@ -143,6 +150,20 @@ const html = {
         textarea(
           {
             class: ["form-control", cls],
+            name: text(nm),
+            id: `input${text(nm)}`,
+            rows: 10,
+          },
+          xss(v || "")
+        ),
+    },
+    CodeMirrorEdit: {
+      isEdit: true,
+      run: (nm, v, attrs, cls) =>
+        textarea(
+          {
+            class: ["form-control", "to-code", cls],
+            mode: "text/html",
             name: text(nm),
             id: `input${text(nm)}`,
             rows: 10,
