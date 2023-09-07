@@ -153,6 +153,7 @@ const html = {
             name: text(nm),
             id: `input${text(nm)}`,
             rows: 10,
+            readonly: attrs.readonly,
           },
           xss(v || "")
         ),
@@ -167,6 +168,7 @@ const html = {
             name: text(nm),
             id: `input${text(nm)}`,
             rows: 10,
+            readonly: attrs.readonly,
           },
           xss(v || "")
         ),
