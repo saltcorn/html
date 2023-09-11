@@ -139,7 +139,7 @@ const html = {
           {
             style: `overflow: hidden;text-overflow: ellipsis;display: -webkit-box; -webkit-line-clamp: ${
               (options && options.number_lines) || 3
-            }; -webkit-box-orient: vertical;`,
+            }; -webkit-box-orient: vertical; word-break: break-all; visibility: visible;`,
           },
           text(xss(v || ""))
         ),
