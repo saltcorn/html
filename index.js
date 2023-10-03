@@ -1,6 +1,7 @@
 const { textarea, text, div, pre, code } = require("@saltcorn/markup/tags");
 const xss = require("xss");
 const { getState } = require("@saltcorn/data/db/state");
+const { getSafeBaseUrl } = require("@saltcorn/data/utils");
 const cheerio = require("cheerio");
 
 xss.whiteList.kbd = [];
@@ -94,10 +95,17 @@ const html = {
   fieldviews: {
     showAll: {
       isEdit: false,
-      run: (v) =>
-        xss(v || "")
+      run: (v, req) => {
+        const s = xss(v || "")
           .split("<blockquote>")
-          .join('<blockquote class="blockquote">'),
+          .join('<blockquote class="blockquote">');
+        if (req.generate_email) {
+          return s.replaceAll(
+            'src="/files/',
+            `src="${getSafeBaseUrl()}/files/`
+          );
+        } else return s;
+      },
     },
     showAsCode: {
       isEdit: false,
