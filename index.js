@@ -18,6 +18,8 @@ xss.whiteList.table = [
 
 xss.whiteList.span.push("style");
 xss.whiteList.p.push("style");
+xss.whiteList.td.push("style");
+xss.whiteList.div.push("style");
 
 const rmFirstWord = (s) => s.substring(s.indexOf(" ") + 1);
 
