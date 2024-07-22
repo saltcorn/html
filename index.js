@@ -1,4 +1,14 @@
-const { textarea, text, div, pre, code } = require("@saltcorn/markup/tags");
+const {
+  textarea,
+  text,
+  div,
+  pre,
+  code,
+  iframe,
+  genericElement,
+  script,
+  domReady,
+} = require("@saltcorn/markup/tags");
 const xss = require("xss");
 const { getState } = require("@saltcorn/data/db/state");
 const { getSafeBaseUrl } = require("@saltcorn/data/utils");
@@ -182,6 +192,44 @@ const html = {
           },
           xss(v || "")
         ),
+    },
+    in_iframe: {
+      isEdit: false,
+      /* configFields: [
+        {
+          name: "number_lines",
+          label: "Number of lines",
+          type: "Integer",
+        },
+      ],*/
+      run: (v, req, options) => {
+        if (!v) return "";
+        const rndid = `iframe${Math.floor(Math.random() * 16777215).toString(
+          16
+        )}`;
+        console.log({ iframe });
+        return (
+          iframe({
+            id: rndid,
+            class: "w-100",
+            onload: "setTimeout(()=>resizeIframe(this))",
+            srcdocPre: v.replaceAll('"', "&quot;"),
+          }) +
+          script(`
+function resizeIframe(obj) {
+  const h = obj.contentWindow.document.documentElement.scrollHeight + "px";
+  obj.style.height = h;
+}
+let ifrm = document.getElementById("${rndid}")
+let ifrmContent = ''
+for(const sty of document.querySelectorAll('link[rel=stylesheet]')) 
+  ifrmContent+='<link href="'+sty.getAttribute("href")+'" rel="stylesheet">';
+ifrmContent += ifrm.getAttribute("srcdocPre");
+ifrm.setAttribute("srcdoc", ifrmContent);
+resizeIframe(ifrm)
+`)
+        );
+      },
     },
   },
   read: (v) => {
