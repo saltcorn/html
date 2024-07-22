@@ -243,7 +243,7 @@ ifrm.setAttribute("srcdoc", ifrmContent);
 ${options.content_height ? `resizeIframe(ifrm);` : ""}
           })()`)
             : options.content_height
-            ? script(`resizeIframe(ifrm);`)
+            ? script(`resizeIframe(document.getElementById("${rndid}"));`)
             : "")
         );
       },
