@@ -1,6 +1,6 @@
 {
   "name": "@saltcorn/html",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "HTML field plugin",
   "main": "index.js",
   "dependencies": {
