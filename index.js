@@ -195,39 +195,56 @@ const html = {
     },
     in_iframe: {
       isEdit: false,
-      /* configFields: [
+      configFields: [
         {
-          name: "number_lines",
-          label: "Number of lines",
-          type: "Integer",
+          name: "copy_stylesheets",
+          label: "Copy stylesheets",
+          type: "Bool",
         },
-      ],*/
+        {
+          name: "content_height",
+          label: "Height from content",
+          type: "Bool",
+        },
+      ],
       run: (v, req, options) => {
         if (!v) return "";
         const rndid = `iframe${Math.floor(Math.random() * 16777215).toString(
           16
         )}`;
-        console.log({ iframe });
         return (
-          script(`function resizeIframe(obj) {
+          (options.content_height
+            ? script(`function resizeIframe(obj) {
   const h = obj.contentWindow.document.documentElement.scrollHeight + "px";
   obj.style.height = h;
-}`) +
+}`)
+            : "") +
           iframe({
             id: rndid,
             class: "w-100",
-            onload: "setTimeout(()=>resizeIframe(this))",
-            srcdocPre: v.replaceAll('"', "&quot;"),
+            onload: options.content_height
+              ? "setTimeout(()=>resizeIframe(this))"
+              : undefined,
+            srcdocPre: options.copy_stylesheets
+              ? v.replaceAll('"', "&quot;")
+              : undefined,
+            srcdoc: !options.copy_stylesheets
+              ? v.replaceAll('"', "&quot;")
+              : undefined,
           }) +
-          script(`  (()=>{
+          (options.copy_stylesheets
+            ? script(`  (()=>{
 let ifrm = document.getElementById("${rndid}")
 let ifrmContent = ''
 for(const sty of document.querySelectorAll('link[rel=stylesheet]')) 
   ifrmContent+='<link href="'+sty.getAttribute("href")+'" rel="stylesheet">';
 ifrmContent += ifrm.getAttribute("srcdocPre");
 ifrm.setAttribute("srcdoc", ifrmContent);
-resizeIframe(ifrm);
+${options.content_height ? `resizeIframe(ifrm);` : ""}
           })()`)
+            : options.content_height
+            ? script(`resizeIframe(ifrm);`)
+            : "")
         );
       },
     },
