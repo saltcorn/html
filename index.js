@@ -216,6 +216,7 @@ const html = {
           (options.content_height
             ? script(`function resizeIframe(obj) {
   const h = obj.contentWindow.document.documentElement.scrollHeight + "px";
+  console.log("setting iframe height", h)
   obj.style.height = h;
 }`)
             : "") +
@@ -243,7 +244,12 @@ ifrm.setAttribute("srcdoc", ifrmContent);
 ${options.content_height ? `resizeIframe(ifrm);` : ""}
           })()`)
             : options.content_height
-            ? script(`resizeIframe(document.getElementById("${rndid}"));`)
+            ? script(
+                `resizeIframe(document.getElementById("${rndid}"));
+                setTimeout(()=>{resizeIframe(document.getElementById("${rndid}"));},0);
+                setTimeout(()=>{resizeIframe(document.getElementById("${rndid}"));},500);
+                `
+              )
             : "")
         );
       },
