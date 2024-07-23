@@ -214,18 +214,35 @@ const html = {
         )}`;
         return (
           (options.content_height
-            ? script(`function resizeIframe(obj) {
-  const h = obj.contentWindow.document.documentElement.scrollHeight + "px";
-  console.log("setting iframe height", h)
-  obj.style.height = h;
-}`)
+            ? script(`function fit${rndid}() {
+        var ifrm =document.getElementById("${rndid}")
+        var win = ifrm.contentWindow
+        var doc = win.document
+        var html = doc.documentElement
+        var body = doc.body
+
+        if(body) {
+            //body.style.overflowX = "scroll" // scrollbar-jitter fix
+            body.style.overflowY = "hidden"
+        }
+        if(html) {
+            //html.style.overflowX = "scroll" // scrollbar-jitter fix
+            html.style.overflowY = "hidden"
+            var style = win.getComputedStyle(html)
+            ifrm.width = parseInt(style.getPropertyValue("width")) // round value
+            ifrm.height = parseInt(style.getPropertyValue("height"))
+        }
+            
+
+    requestAnimationFrame(fit${rndid})
+            }
+
+
+addEventListener("load", requestAnimationFrame.bind(this, fit${rndid}))`)
             : "") +
           iframe({
             id: rndid,
-            class: "w-100",
-            onload: options.content_height
-              ? "setTimeout(()=>resizeIframe(this))"
-              : undefined,
+            class: ["w-100", options.content_height && "gh-fit"],
             srcdocPre: options.copy_stylesheets
               ? v.replaceAll('"', "&quot;")
               : undefined,
@@ -241,15 +258,7 @@ for(const sty of document.querySelectorAll('link[rel=stylesheet]'))
   ifrmContent+='<link href="'+sty.getAttribute("href")+'" rel="stylesheet">';
 ifrmContent += ifrm.getAttribute("srcdocPre");
 ifrm.setAttribute("srcdoc", ifrmContent);
-${options.content_height ? `resizeIframe(ifrm);` : ""}
           })()`)
-            : options.content_height
-            ? script(
-                `resizeIframe(document.getElementById("${rndid}"));
-                setTimeout(()=>{resizeIframe(document.getElementById("${rndid}"));},0);
-                setTimeout(()=>{resizeIframe(document.getElementById("${rndid}"));},500);
-                `
-              )
             : "")
         );
       },
