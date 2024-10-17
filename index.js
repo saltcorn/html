@@ -274,4 +274,8 @@ ifrm.setAttribute("srcdoc", ifrmContent);
   },
 };
 
-module.exports = { sc_plugin_api_version: 1, types: [html] };
+module.exports = {
+  sc_plugin_api_version: 1,
+  types: [html],
+  ready_for_mobile: true,
+};
