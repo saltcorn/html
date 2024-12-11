@@ -68,6 +68,10 @@ const searchExtract = (txt, q) => {
 const html = {
   name: "HTML",
   sql_name: "text",
+  //TODO only remove embedded base64 images
+  searchModifier: (fname) =>
+    `regexp_replace(${fname},'<img[^>]*>','','g')`,
+
   attributes: ({ table }) => {
     const strFields =
       table &&
