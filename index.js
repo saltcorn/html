@@ -70,7 +70,7 @@ const html = {
   sql_name: "text",
   //TODO only remove embedded base64 images
   searchModifier: (fname) =>
-    `regexp_replace(${fname},'<img[^>]*>','','g')`,
+    `regexp_replace(${fname},'<img[^>]*>|data:(\\w+)\\/(\\w+);base64,[^=]*=*','','g')`,
 
   attributes: ({ table }) => {
     const strFields =
