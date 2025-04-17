@@ -29,7 +29,10 @@ xss.whiteList.table = [
 xss.whiteList.span.push("style");
 xss.whiteList.p.push("style");
 xss.whiteList.td.push("style");
-xss.whiteList.div.push("style");
+xss.whiteList.div.push("style", "drawio-diagram", "id");
+xss.whiteList.ul.push("class");
+xss.whiteList.li.push("class");
+xss.whiteList.input = ["type", "disabled"];
 
 const rmFirstWord = (s) => s.substring(s.indexOf(" ") + 1);
 
@@ -165,7 +168,12 @@ const html = {
               (options && options.number_lines) || 3
             }; -webkit-box-orient: vertical; word-break: break-all; visibility: visible;`,
           },
-          text(xss(v || ""))
+          text(xss(v || ""), {
+            div: ["drawio-diagram", "id"],
+            ul: ["class"],
+            li: ["class"],
+            input: ["type", "disabled"],
+          })
         ),
     },
     editHTML: {
