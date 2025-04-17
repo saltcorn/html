@@ -118,7 +118,7 @@ const html = {
         const s = xss(v || "")
           .split("<blockquote>")
           .join('<blockquote class="blockquote">');
-        if (req.generate_email) {
+        if (req?.generate_email) {
           return s.replaceAll(
             'src="/files/',
             `src="${getSafeBaseUrl()}/files/`
