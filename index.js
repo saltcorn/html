@@ -32,7 +32,7 @@ xss.whiteList.td.push("style");
 xss.whiteList.div.push("style", "drawio-diagram", "id");
 xss.whiteList.ul.push("class");
 xss.whiteList.li.push("class");
-xss.whiteList.input = ["type", "disabled"];
+xss.whiteList.input = ["type", "disabled", "checked"];
 
 const rmFirstWord = (s) => s.substring(s.indexOf(" ") + 1);
 
