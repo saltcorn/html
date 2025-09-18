@@ -228,6 +228,7 @@ const html = {
           (options.content_height
             ? script(`function fit${rndid}() {
         var ifrm =document.getElementById("${rndid}")
+        if (!ifrm) return;
         var win = ifrm.contentWindow
         var doc = win.document
         var html = doc.documentElement
