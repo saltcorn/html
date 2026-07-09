@@ -8,6 +8,7 @@ const {
   genericElement,
   script,
   domReady,
+  escape,
 } = require("@saltcorn/markup/tags");
 const xss = require("xss");
 const { getState } = require("@saltcorn/data/db/state");
@@ -187,7 +188,7 @@ const html = {
             rows: 10,
             readonly: attrs.readonly,
           },
-          xss(v || "")
+          escape(v || "")
         ),
     },
     CodeMirrorEdit: {
@@ -202,7 +203,7 @@ const html = {
             rows: 10,
             readonly: attrs.readonly,
           },
-          xss(v || "")
+          escape(v || "")
         ),
     },
     in_iframe: {
