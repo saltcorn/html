@@ -227,32 +227,38 @@ const html = {
         )}`;
         return (
           (options.content_height
-            ? script(`function fit${rndid}() {
-        var ifrm =document.getElementById("${rndid}")
-        if (!ifrm) return;
-        var win = ifrm.contentWindow
-        var doc = win.document
-        var html = doc.documentElement
-        var body = doc.body
+            ? script(`(function () {
+    function fit(f) {
+        var win = f.contentWindow;
+        if (!win || !win.document || !win.document.documentElement) return;
+        var h = Math.ceil(win.document.documentElement.getBoundingClientRect().height);
+        if (h > 0 && f.style.height !== h + "px") f.style.height = h + "px";
+    }
 
-        if(body) {
-            //body.style.overflowX = "scroll" // scrollbar-jitter fix
-            body.style.overflowY = "hidden"
+    function attach(f) {
+        if (f._fitted) return;
+        f._fitted = true;
+        f.style.display = "block";
+        f.setAttribute("scrolling", "no");
+
+        function observe() {
+            fit(f);
+            var win = f.contentWindow;
+            if (!win || !win.ResizeObserver) return;
+            if (f._ro) f._ro.disconnect();
+            f._ro = new win.ResizeObserver(function () { fit(f); });
+            f._ro.observe(win.document.documentElement);
         }
-        if(html) {
-            //html.style.overflowX = "scroll" // scrollbar-jitter fix
-            html.style.overflowY = "hidden"
-            var style = win.getComputedStyle(html)
-            ifrm.width = parseInt(style.getPropertyValue("width")) // round value
-            ifrm.height = parseInt(style.getPropertyValue("height"))
-        }
-            
 
-    requestAnimationFrame(fit${rndid})
-            }
+        f.addEventListener("load", observe);
+        if (f.contentDocument && f.contentDocument.readyState === "complete") observe();
+    }
 
+    function scan() { document.querySelectorAll("#${rndid}").forEach(attach); }
 
-addEventListener("load", requestAnimationFrame.bind(this, fit${rndid}))`)
+    scan();
+    new MutationObserver(scan).observe(document.body, { childList: true, subtree: true });
+})();`)
             : "") +
           iframe({
             id: rndid,
